@@ -107,8 +107,12 @@ namespace turnup_portal.Pages
             {
                 Console.WriteLine("the last row of the table is different from the data you just edited");
             }
+            
+        }
+        public void Quitbrowswe(IWebDriver driver)
+        {
             /*quit the browser*/
-            //driver.Quit();
+            driver.Quit();
         }
 
     }

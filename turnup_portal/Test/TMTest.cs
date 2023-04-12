@@ -15,6 +15,7 @@ TMPage tmPageObj =new TMPage();
 tmPageObj.CreateTM(driver);
 tmPageObj.EditTM(driver);
 tmPageObj.DeleteTM(driver);
+tmPageObj.Quitbrowswe(driver);
 
 
 
