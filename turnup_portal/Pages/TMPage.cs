@@ -19,10 +19,7 @@ namespace turnup_portal.Pages
 
             driver.FindElement(By.Id("Code")).SendKeys("test-code");
             driver.FindElement(By.Id("Description")).SendKeys("testdata-Description");
-            /*
-            driver.FindElement(By.Id("Price")).Click();
-            driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]")).SendKeys("testdata");
-            */
+            
             IWebElement priceOverlap = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
             priceOverlap.Click();
 
