@@ -1,51 +1,63 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using turnup_portal.Utilities;
 
 namespace turnup_portal.Pages
 {
-    public class TMPage
+    public class TMPage:CommonDriver
     {
-        public void CreateTM(IWebDriver driver)
+        public void CreateTM()
         {
             /*Create the new time and material record*/
-            driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a")).Click();
-            driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span")).Click();
-            Thread.Sleep(2000);
-            driver.FindElement(By.XPath("//*[@id=\"TypeCode_option_selected\"]")).Click();
 
-            driver.FindElement(By.Id("Code")).SendKeys("test-code");
-            driver.FindElement(By.Id("Description")).SendKeys("testdata-Description");
+            IWebElement createNewTimeMaterialButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
+            createNewTimeMaterialButton.Click();
+            IWebElement typeCodeSelect = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span"));
+            typeCodeSelect.Click();
+            
+            Thread.Sleep(2000);
+
+            IWebElement typeCodeSelected = driver.FindElement(By.XPath("//*[@id=\"TypeCode_option_selected\"]"));
+            typeCodeSelected.Click();
+
+            IWebElement codeTextBox = driver.FindElement(By.Id("Code"));
+            codeTextBox.SendKeys("test-code");
+            IWebElement decriptionTextBox = driver.FindElement(By.Id("Description"));
+            decriptionTextBox.SendKeys("testdata-Description");
             
             IWebElement priceOverlap = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
             priceOverlap.Click();
 
-            driver.FindElement(By.Id("Price")).SendKeys("100");
-            driver.FindElement(By.Id("SaveButton")).Click();
+            IWebElement priceTextBox = driver.FindElement(By.Id("Price"));
+            priceTextBox.SendKeys("100");
+            IWebElement saveTimeMaterialButton = driver.FindElement(By.Id("SaveButton"));
+            saveTimeMaterialButton.Click();
 
             /*Check if the data is been saved in the table*/
             Thread.Sleep(4000);
 
-            IWebElement goto_last_row = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            goto_last_row.Click();
-
+            IWebElement gotoLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            gotoLastPageButton.Click();
+           
             Thread.Sleep(3000);
             Console.WriteLine("thread sleep finished");
 
             /* whole data of the first row*/
-            IWebElement whole_last_row = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]"));
-            string whole_last_row_content = whole_last_row.Text;
-            Console.WriteLine("whole row content " + whole_last_row_content);
+            IWebElement wholeLastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]"));
+            string wholeLastRowContent = wholeLastRow.Text;
+            Console.WriteLine("whole row content " + wholeLastRowContent);
 
             /*last row but just the first column*/
-            IWebElement last_row = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            string last_row_code = last_row.Text;
-            Console.WriteLine("code of the last row " + last_row_code);
+            IWebElement LastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            string LastRowCode = LastRow.Text;
+            Console.WriteLine("code of the last row " + LastRowCode);
 
-            if (last_row_code == "test-code")
+            if (LastRowCode == "test-code")
             {
                 Console.WriteLine("Reocord was added to the table");
             }
@@ -54,49 +66,94 @@ namespace turnup_portal.Pages
                 Console.WriteLine("the last row of the table is different from the data you just added");
             }
         }
-        public void EditTM(IWebDriver driver)
+        public void EditTM()
         {
-            /* Edit the last of the table*/
-            driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]")).Click();
-            driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[1]")).Click();
-            Thread.Sleep(3000);
-            driver.FindElement(By.XPath("//*[@id=\"TypeCode_listbox\"]/li[2]")).Click();
+            Thread.Sleep(2000);
+            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            goToLastPageButton.Click();
 
-            driver.FindElement(By.Id("Code")).SendKeys("-time");
-            driver.FindElement(By.Id("Description")).SendKeys("-time");
+            Thread.Sleep(4000);
+            IWebElement newCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            IWebElement priceOverlap_edit = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
-            priceOverlap_edit.Click();
+            if (newCode.Text == "test-code")
+            {
+                //click on edit button
+                Thread.Sleep(1000);
 
-            driver.FindElement(By.Id("Price")).SendKeys("24");
-            //priceOverlap_edit.Click();
-            driver.FindElement(By.Id("SaveButton")).Click();
+                IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[last()]/a[1]"));
+                editButton.Click();
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                Assert.Fail("Record recently created hasn't been found");
+            }
+
+            //select Time option from dropdown
+            IWebElement dropdownEdit = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span"));
+            dropdownEdit.Click();
+            Thread.Sleep(500);
+
+            IWebElement timeOptionEdit = driver.FindElement(By.XPath("//*[@id=\"TypeCode-list\"]"));
+            timeOptionEdit.Click();
+
+            //edit code into code textbox
+            IWebElement editcodeTextbox = driver.FindElement(By.XPath("//*[@id=\"Code\"]"));
+            editcodeTextbox.SendKeys("-time");
+
+            //edit description into description boxr1q
+            IWebElement editdescriptionTextbox = driver.FindElement(By.XPath("//*[@id=\"Description\"]"));
+            editdescriptionTextbox.SendKeys("-time");
+
+
+
+            //edit price into price per unit textbox
+            IWebElement editpriceOverlap = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
+            IWebElement editpriceTextbox = driver.FindElement(By.Id("Price"));
+
+            editpriceOverlap.Click();
+            editpriceTextbox.Clear();
+            editpriceOverlap.Click();
+            editpriceTextbox.SendKeys("200");
+
+            //click on save button
+            IWebElement savebuttonEdit = driver.FindElement(By.Id("SaveButton"));
+            savebuttonEdit.Click();
+            Thread.Sleep(2000);
+
+
+            //check if Time record has been edited
+            IWebElement goToEditLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            goToEditLastPageButton.Click();
+
+            IWebElement editCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
+            Assert.That(editCode.Text == "test-code-time", "Record hasn't been edited.");
         }
-        public void DeleteTM(IWebDriver driver)
+        public void DeleteTM()
         {
             /*Delete the last row of the table*/
             Thread.Sleep(4000);
 
-            IWebElement goto_last_row_edit = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            goto_last_row_edit.Click();
-
+            IWebElement gotoLastEdit = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            gotoLastEdit.Click();
+            
             /*whole data of the last row that was edited*/
-            IWebElement edit_whole_row = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]"));
-            string editwhole_last_row_content = edit_whole_row.Text;
-            Console.WriteLine("whole row content after editing " + editwhole_last_row_content);
+            IWebElement editwholeLastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]"));
+            string editWholeLastRowContent = editwholeLastRow.Text;
             Thread.Sleep(4000);
 
             /*last row but just the first column that was edited*/
-            IWebElement edited_last_row = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            string edited_last_row_code = edited_last_row.Text;
-            Console.WriteLine("code of the last row after editing  " + edited_last_row_code);
+            IWebElement editedLastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            string editededitedLastRowCode = editedLastRow.Text;
+            Console.WriteLine("code of the last row after editing  " + editededitedLastRowCode);
             Thread.Sleep(4000);
 
-            if (edited_last_row_code == "test-code-time")
+            if (editededitedLastRowCode == "test-code-time")
             {
                 Console.WriteLine("Reocord was added to the table");
                 Thread.Sleep(3000);
-                driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]")).Click();
+                IWebElement deleteTimeMaterialButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
+                deleteTimeMaterialButton.Click();
                 driver.SwitchTo().Alert().Accept();
                 Console.WriteLine("the Reocord was deleted from the table");
             }
@@ -106,7 +163,7 @@ namespace turnup_portal.Pages
             }
             
         }
-        public void Quitbrowswe(IWebDriver driver)
+        public void Quitbrowser()
         {
             /*quit the browser*/
             driver.Quit();
