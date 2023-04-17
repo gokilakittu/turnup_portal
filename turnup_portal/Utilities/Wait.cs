@@ -30,8 +30,6 @@ namespace turnup_portal.Utilities
             {
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.LinkText(locatorValue)));
             }
-            
-
         }
     }
 }

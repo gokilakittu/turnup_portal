@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,32 +9,31 @@ using turnup_portal.Utilities;
 
 namespace turnup_portal.Pages
 {
-    public class HomePage:CommonDriver
+    public class HomePage : CommonDriver
     {
         public void NavigateToTM()
         {
-            /*Check the current user*/
-            IWebElement currentUsername = driver.FindElement(By.LinkText("Hello hari!"));
-            String currentUsernameString = currentUsername.Text;
-            Console.WriteLine("Current user name " + currentUsernameString);
-            
-            /*IF THE ANCHOR IS NOT CONVERTED INTO TEXT*/
-            if (currentUsername.Text == "Hello hari!")
-            {
-                Console.WriteLine("User logged in");
-            }
-            else
-            {
-                Console.WriteLine("User not logged in");
-            }
-
-            /*Navigate to time and material page in menu*/
+            //FINDING ELEMENTS AND STORING IN WEBELEMENT
             IWebElement administrationMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
+            //IWebElement timeMaterialMenu = driver.FindElement(By.LinkText("Time & Materials"));
+            IWebElement timeMaterialMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
+
+            //USER ACTIONS
             administrationMenu.Click();
-            Wait.WaitToBeVisible(driver, "administrationMenu", "Time & Materials",2000);
-            
-            IWebElement timeMaterialMenu = driver.FindElement(By.LinkText("Time & Materials"));
+            Wait.WaitToBeVisible(driver, "administrationMenu", "Time & Materials", 2000);
             timeMaterialMenu.Click();
+        }
+        public void ConfirmCurrentUser()
+        {
+            //FINDING ELEMENTS AND STORING IN WEBELEMENT
+            IWebElement currentUsername = driver.FindElement(By.LinkText("Hello hari!"));
+
+            //DECLARE ALL THE VARIABLES
+            String currentUserText = "Hello hari!";
+            String actualUserText = currentUsername.Text;
+
+            //CHECKING THE EXPECTED AND ACTUAL
+            Assert.AreEqual(currentUserText, actualUserText);
         }
     }
 }

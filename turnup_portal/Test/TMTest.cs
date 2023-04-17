@@ -7,7 +7,7 @@ using turnup_portal.Utilities;
 
 namespace turnup_portal.Tests
 {
-    [TestFixture]
+    [TestFixture,Parallelizable]
     public class TMTests : CommonDriver
     {
         LoginPage loginPageObj = new LoginPage();
@@ -21,21 +21,22 @@ namespace turnup_portal.Tests
             loginPageObj.LoginSteps(driver);
             homePageObj.NavigateToTM();
         }
-        /*public void confirmUser()
+        [Test, Order(1),Description("Check the user session")]
+        public void ConfirmUser()
         {
-            homePageObj.NavigateToTM();
-        }*/
-        [Test,Order(1)]
+            homePageObj.ConfirmCurrentUser();
+        }
+        [Test,Order(2),Description("Time and Material-create")]
         public void CreateTM_Test()
         {
             tmPageObj.CreateTM();
         }
-        [Test,Order(2)]
+        [Test,Order(3), Description("Time and Material-edit")]
         public void EditTM_Test()
         {
             tmPageObj.EditTM();
         }
-        [Test,Order(3)]
+        [Test,Order(4) ,Description("Time and Material-delete")]
         public void DeleteTM_Test()
         {
            tmPageObj.DeleteTM();

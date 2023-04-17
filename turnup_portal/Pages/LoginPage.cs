@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -13,19 +14,20 @@ namespace turnup_portal.Pages
     {
         public void LoginSteps(IWebDriver driver)
         {
-            driver.Manage().Window.Maximize();
-            
-            /* OPEN the the project URL, and enter username and password and click login*/
+            //OPEN URL AND MAXIMIZE THE BROWSER
             driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login?ReturnUrl=%2f");
+            driver.Manage().Window.Maximize();
 
+            //FINDING ELEMENTS AND STORING IN WEBELEMENT
             IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));
-            usernameTextbox.SendKeys("hari");
-
             IWebElement passwordTextbox = driver.FindElement(By.Id("Password"));
-            passwordTextbox.SendKeys("123123");
-           
             IWebElement loginButton = driver.FindElement(By.XPath("//*[@id=\"loginForm\"]/form/div[3]/input[1]"));
+
+            //ACTIONS THE USER PERFORMS
+            usernameTextbox.SendKeys("hari");
+            passwordTextbox.SendKeys("123123");
             loginButton.Click();
+            Thread.Sleep(2000);
         }
     }
 }
