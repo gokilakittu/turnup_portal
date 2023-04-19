@@ -17,8 +17,6 @@ namespace turnup_portal.Utilities
         {
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
             
-            //Console.WriteLine("locator-> " + locator + "locator value-> " + locatorValue + "timeout-> " + seconds);
-
             if (locator == "XPath")
             {
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(locatorValue)));
@@ -42,10 +40,7 @@ namespace turnup_portal.Utilities
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
             if (locator == "XPath")
             {
-                Console.WriteLine("waited for the page to load completely- till last page- before");
-                Console.WriteLine("locator-> "+ locator + "locator value-> " +locatorValue + "timeout-> "+ timeoutSecond);
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(locatorValue)));
-                Console.WriteLine("waited for the page to load completely- till last page");
             }
             
         }
