@@ -9,6 +9,6 @@ namespace turnup_portal.Utilities
 {
     public class CommonDriver
     {
-        public static IWebDriver driver;
+        public static IWebDriver driver = default!;
     }
 }

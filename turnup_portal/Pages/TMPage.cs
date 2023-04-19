@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,50 +15,48 @@ namespace turnup_portal.Pages
     {
         public void CreateTM()
         {
-            
             //FIND ALL ELEMENTS AND STOREING IN THE WEBELEMENTS
             IWebElement createNewTimeMaterialButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
-            Thread.Sleep(2000);
             createNewTimeMaterialButton.Click();
-
+            
             IWebElement typeCodeSelect = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[2]/span"));
+            typeCodeSelect.Click();
+            Wait.WaitToBeVisible(driver, "typeCodeSelect", "typeCodeSelected", 2000);
+            Thread.Sleep(2000);
             IWebElement typeCodeSelected = driver.FindElement(By.XPath("//*[@id=\"TypeCode_option_selected\"]"));
+            typeCodeSelected.Click();
+            
             IWebElement codeTextBox = driver.FindElement(By.Id("Code"));
             IWebElement decriptionTextBox = driver.FindElement(By.Id("Description"));
             IWebElement priceOverlap = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
             IWebElement priceTextBox = driver.FindElement(By.Id("Price"));
             IWebElement saveTimeMaterialButton = driver.FindElement(By.Id("SaveButton"));
-            
+
             //USER ACTIONS / ACTIONS PERFORMED IN THE PAGE
-            Thread.Sleep(2000);
-            typeCodeSelect.Click();
-            
-            Thread.Sleep(2000);
-            typeCodeSelected.Click();
             codeTextBox.SendKeys("test-code");
             decriptionTextBox.SendKeys("testdata-Description");
             priceOverlap.Click();
             priceTextBox.SendKeys("100");
             saveTimeMaterialButton.Click();
-            
-            Thread.Sleep(4000);
-            IWebElement gotoLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            
-            gotoLastPageButton.Click();
-            Thread.Sleep(4000);
-            IWebElement wholeLastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]"));
-            IWebElement LastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            
-            // DECLARING ALL THE VARIABLES
-            string wholeLastRowContent = wholeLastRow.Text;
-            string LastRowCode = LastRow.Text;
 
-            
+            Thread.Sleep(2000);
+            IWebElement gotoLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            gotoLastPageButton.Click();
+            Thread.Sleep(2000);
+            //IWebElement wholeLastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]"));
+            IWebElement LastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+           
+            // DECLARING ALL THE VARIABLES
+            //string wholeLastRowContent = wholeLastRow.Text;
+            string LastRowCode = LastRow.Text;
+            //Wait.WaitForTableToLoadCompletely(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]", 2000);
+
 
             // CHECKING EXPECTED AND ACTUAL RESULT
             Assert.AreEqual(LastRowCode, "test-code");
-            //Console.WriteLine(LastRowCode + "test-code");
+           
         }
+
         public void EditTM()
         {
             //GO TOT THE LAST PAGE TO EDIT
@@ -145,7 +145,6 @@ namespace turnup_portal.Pages
 
             // CHECKING EXPECTED AND ACTUAL RESULT
             Assert.AreNotEqual(deleteCode.Text,"test-code-time");
-            //Console.WriteLine(deleteCode.Text  + "test-code-time");
         }
         public void Quitbrowser()
         {

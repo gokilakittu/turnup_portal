@@ -15,7 +15,6 @@ namespace turnup_portal.Pages
         {
             //FINDING ELEMENTS AND STORING IN WEBELEMENT
             IWebElement administrationMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
-            //IWebElement timeMaterialMenu = driver.FindElement(By.LinkText("Time & Materials"));
             IWebElement timeMaterialMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
 
             //USER ACTIONS
@@ -35,5 +34,17 @@ namespace turnup_portal.Pages
             //CHECKING THE EXPECTED AND ACTUAL
             Assert.AreEqual(currentUserText, actualUserText);
         }
+        public void NavigateToEmployee()
+        {
+            //FINDING ELEMENTS AND STORING IN WEBELEMENT
+            IWebElement administrationMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
+            IWebElement employeeMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[2]/a"));
+
+            //USER ACTIONS
+            administrationMenu.Click();
+            Wait.WaitToBeVisible(driver, "administrationMenu", "Employees", 2000);
+            employeeMenu.Click();
+        }
+        
     }
 }

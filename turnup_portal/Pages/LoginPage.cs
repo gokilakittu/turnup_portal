@@ -27,7 +27,6 @@ namespace turnup_portal.Pages
             usernameTextbox.SendKeys("hari");
             passwordTextbox.SendKeys("123123");
             loginButton.Click();
-            Thread.Sleep(2000);
         }
     }
 }
