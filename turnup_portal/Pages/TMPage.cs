@@ -106,7 +106,7 @@ namespace turnup_portal.Pages
             Console.WriteLine(editCode);
             // CHECKING EXPECTED AND ACTUAL RESULT
             Assert.That(editCode.Text == "testdata-time");
-            //Assert.AreEqual(editCode.Text, "testdata-time");
+       
         }
         public void DeleteTM(IWebDriver driver)
         {

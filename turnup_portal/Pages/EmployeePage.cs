@@ -29,27 +29,10 @@ namespace turnup_portal.Pages
             empPasswordTextbox.SendKeys("Testdata@123");
             empRetypePasswordTextbox.SendKeys("Testdata@123");
 
-            /* implement list
-             IWebElement empGroupTextbox = driver.FindElement(By.Id("groupList"));
-            empNameTextbox.SendKeys("tesdata");
-            */
-
-            /*Code yourself
-             IWebElement groupOption = driver.FindElement(By.XPath("//*[@id=\"groupList_listbox\"]/li[13]"));
-            //Creating object of an Actions class
-            Actions action = new Actions(driver);
-            //Performing the mouse hover action on the target element nztest.
-            action.MoveToElement(groupOption).Perform();
-            groupOption.Click(); //this dropdown is built such a way that first we need to hover over the option and then click on it
-             */
-
             IWebElement empSaveButton = driver.FindElement(By.Id("SaveButton"));
             empSaveButton.Click();
             Thread.Sleep(2000);
 
-            /*IWebElement backToListFromCreateEmpButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/div/a"));
-            backToListFromCreateEmpButton.Click(); 
-            Thread.Sleep(2000);*/
             IWebElement backtoListLink = driver.FindElement(By.XPath("//*[@id=\"container\"]/div/a"));
             backtoListLink.Click();
             Thread.Sleep(3000);
@@ -71,7 +54,6 @@ namespace turnup_portal.Pages
 
             IWebElement lastEmpNameInTable = driver.FindElement(By.XPath("//*[@id=\"usersGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            //Console.WriteLine(lastEmpNameInTable.Text);
             if (lastEmpNameInTable.Text == "testdata")
             {
                 IWebElement lastEmpEditButton = driver.FindElement(By.XPath("//*[@id=\"usersGrid\"]/div[3]/table/tbody/tr[5]/td[3]/a[1]"));
@@ -98,10 +80,6 @@ namespace turnup_portal.Pages
                 empSaveButton.Click();
                 Thread.Sleep(2000);
 
-                /*IWebElement backToListFromCreateEmpButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/div/a"));
-                backToListFromCreateEmpButton.Click(); 
-                Thread.Sleep(2000);*/
-
                 IWebElement backtoListLink = driver.FindElement(By.XPath(" //*[@id=\"container\"]/div/a"));
                 backtoListLink.Click();
                 Thread.Sleep(3000);
@@ -127,8 +105,6 @@ namespace turnup_portal.Pages
             Thread.Sleep(4000);
 
             IWebElement lastEmpNameInTable = driver.FindElement(By.XPath("//*[@id=\"usersGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-
-            //Console.WriteLine(lastEmpNameInTable.Text);
 
             if (lastEmpNameInTable.Text == "testdata_edit")
             {
