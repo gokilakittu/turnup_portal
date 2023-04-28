@@ -12,45 +12,39 @@ using turnup_portal.Utilities;
 namespace turnup_portal.Test
 {
     [TestFixture]
-    //[Parallelizable]
+    [Parallelizable]
     public class EmployeeTest:CommonDriver
     {
-        LoginPage loginPageObj = new LoginPage();
         HomePage homePageObj = new HomePage();
         EmployeePage empObj = new EmployeePage();
 
-        [SetUp]
-        public void LoginActions()
-        {
-            driver = new ChromeDriver();
-            loginPageObj.LoginSteps(driver);
-            homePageObj.NavigateToEmployee();
-        }
         
         [Test, Order(1)]
-        public void currentUserTest()
+        public void CurrentUserTest()
         {
-            homePageObj.ConfirmCurrentUser();
+            homePageObj.ConfirmCurrentUser(driver);
         }
+
         [Test, Order(2)]
-        public void CreateEmployeeTest() { 
-            empObj.CreateEmployee();
+        public void CreateEmployeeTest() 
+        {
+            homePageObj.NavigateToEmployee(driver);
+            empObj.CreateEmployee(driver);
         }
+
         [Test,Order(3)]
         public void EditEmployeeTest()
         {
-            empObj.EditEmployee();
+            homePageObj.NavigateToEmployee(driver);
+            empObj.EditEmployee(driver);
         }
 
         [Test,Order(4)]
         public void DeleteEmployeeTest()
         {
-            empObj.DeleteEmployee();
+            homePageObj.NavigateToEmployee(driver);
+            empObj.DeleteEmployee(driver);
         }
-        [TearDown]
-        public void Quitbrowser()
-        {
-            empObj.Quitbrowser();
-        }
+        
     }
 }

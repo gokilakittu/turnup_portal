@@ -4,6 +4,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ using turnup_portal.Utilities;
 
 namespace turnup_portal.Pages
 {
-    public class TMPage:CommonDriver
+    public class TMPage
     {
-        public void CreateTM()
+        public void CreateTM(IWebDriver driver)
         {
             //FIND ALL ELEMENTS AND STOREING IN THE WEBELEMENTS
             IWebElement createNewTimeMaterialButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
@@ -33,7 +34,7 @@ namespace turnup_portal.Pages
             IWebElement saveTimeMaterialButton = driver.FindElement(By.Id("SaveButton"));
 
             //USER ACTIONS / ACTIONS PERFORMED IN THE PAGE
-            codeTextBox.SendKeys("test-code");
+            codeTextBox.SendKeys("testdata");
             decriptionTextBox.SendKeys("testdata-Description");
             priceOverlap.Click();
             priceTextBox.SendKeys("100");
@@ -43,21 +44,16 @@ namespace turnup_portal.Pages
             IWebElement gotoLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             gotoLastPageButton.Click();
             Thread.Sleep(2000);
-            //IWebElement wholeLastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]"));
             IWebElement LastRow = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-           
-            // DECLARING ALL THE VARIABLES
-            //string wholeLastRowContent = wholeLastRow.Text;
             string LastRowCode = LastRow.Text;
-            //Wait.WaitForTableToLoadCompletely(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]", 2000);
-
+            Wait.WaitForTableToLoadCompletely(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]", 2000);
+            Thread.Sleep(2000);
 
             // CHECKING EXPECTED AND ACTUAL RESULT
-            Assert.AreEqual(LastRowCode, "test-code");
-           
+            Assert.AreEqual(LastRowCode, "testdata");
         }
 
-        public void EditTM()
+        public void EditTM(IWebDriver driver)
         {
             //GO TOT THE LAST PAGE TO EDIT
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
@@ -69,7 +65,8 @@ namespace turnup_portal.Pages
             IWebElement newCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
             
             //USER ACTIONS / ACTIONS PERFORMED IN THE PAGE
-            if (newCode.Text == "test-code"){
+            if (newCode.Text == "testdata")
+            {
                 Thread.Sleep(1000);
                 IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[last()]/a[1]"));
                 editButton.Click();
@@ -102,15 +99,16 @@ namespace turnup_portal.Pages
             //GO TOT THE LAST PAGE TO GET THE LAST ROW CONTENT-CODE
             Thread.Sleep(2000);
             IWebElement goToEditLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            Thread.Sleep(2000);
             goToEditLastPageButton.Click();
-            IWebElement editCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
+            Thread.Sleep(3000);
 
+            IWebElement editCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            Console.WriteLine(editCode);
             // CHECKING EXPECTED AND ACTUAL RESULT
-            //Assert.That(editCode.Text == "test-code-time");
-            Assert.AreEqual(editCode.Text, "test-code-time");
+            Assert.That(editCode.Text == "testdata-time");
+            //Assert.AreEqual(editCode.Text, "testdata-time");
         }
-        public void DeleteTM()
+        public void DeleteTM(IWebDriver driver)
         {
             //GO TOT THE LAST PAGE TO DELETE
             Thread.Sleep(2000);
@@ -128,7 +126,7 @@ namespace turnup_portal.Pages
             string editededitedLastRowCode = editedLastRow.Text;
 
             //USER ACTIONS / ACTIONS PERFORMED IN THE PAGE
-            if (editededitedLastRowCode == "test-code-time")
+            if (editededitedLastRowCode == "testdata-time")
             {
                 Thread.Sleep(3000);
                 IWebElement deleteTimeMaterialButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
@@ -142,11 +140,11 @@ namespace turnup_portal.Pages
             driver.SwitchTo().Alert().Accept();
             Thread.Sleep(3000);
             IWebElement deleteCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-
+            Thread.Sleep(3000);
             // CHECKING EXPECTED AND ACTUAL RESULT
             Assert.AreNotEqual(deleteCode.Text,"test-code-time");
         }
-        public void Quitbrowser()
+        public void Quitbrowser(IWebDriver driver)
         {
             driver.Quit();
         }

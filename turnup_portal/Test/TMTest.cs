@@ -11,41 +11,35 @@ namespace turnup_portal.Tests
     [Parallelizable]
     public class TMTests : CommonDriver
     {
-        LoginPage loginPageObj = new LoginPage();
         HomePage homePageObj = new HomePage();
         TMPage tmPageObj = new TMPage();
         
-        [SetUp]
-        public void LoginActions()
+        
+        [Test, Order(1),Description("Check the user session")]
+        public void ConfirmUserTest()
         {
-            driver = new ChromeDriver();
-            loginPageObj.LoginSteps(driver);
-            homePageObj.NavigateToTM();
+            homePageObj.ConfirmCurrentUser(driver);
         }
-        /*[Test, Order(1),Description("Check the user session")]
-        public void ConfirmUser()
-        {
-            homePageObj.ConfirmCurrentUser();
-        }*/
+
         [Test,Order(2),Description("Time and Material-create")]
-        public void CreateTM_Test()
+        public void CreateTMTest()
         {
-            tmPageObj.CreateTM();
+            homePageObj.NavigateToTM(driver);
+            tmPageObj.CreateTM(driver);
         }
+
         [Test,Order(3), Description("Time and Material-edit")]
-        public void EditTM_Test()
+        public void EditTMTest()
         {
-            tmPageObj.EditTM();
+            homePageObj.NavigateToTM(driver);
+            tmPageObj.EditTM(driver);
         }
+
         [Test,Order(4) ,Description("Time and Material-delete")]
-        public void DeleteTM_Test()
+        public void DeleteTMTest()
         {
-           tmPageObj.DeleteTM();
-        }
-        [TearDown]
-        public void Quitbrowser()
-        {
-            tmPageObj.Quitbrowser();
+            homePageObj.NavigateToTM(driver);
+            tmPageObj.DeleteTM(driver);
         }
     }
 }
