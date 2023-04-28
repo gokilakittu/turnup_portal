@@ -12,10 +12,6 @@ namespace turnup_portal.Utilities
 {
     public class CommonDriver
     {
-        /* old
-         * public static IWebDriver driver = default!;*/
-
-
         public IWebDriver driver;
 
         [OneTimeSetUp]
